@@ -1,0 +1,35 @@
+CREATE FUNCTION dbo.UnwantedColum(@TableName varchar(50),@UnwantedColumName varchar(max))  
+RETURNS varchar(max)   
+AS   
+-- Returns the stock level for the product.  
+BEGIN  
+    
+Declare @Columns varchar(max) =''
+DECLARE @sql_xml XML = Cast('<root><U>'+ Replace(@UnwantedColumName, ',', '</U><U>')+ '</U></root>' AS XML)
+
+set	@Columns= (
+select distinct
+STUFF((SELECT  allColumns.COLUMN_NAME  +', '
+FROM (
+SELECT COLUMN_NAME
+FROM INFORMATION_SCHEMA.COLUMNS as tb
+WHERE TABLE_NAME = N''+@TableName
+) AS allColumns
+WHERE allColumns.COLUMN_NAME NOT IN (SELECT f.x.value('.', 'VARCHAR(100)') AS tuple FROM @sql_xml.nodes('/root/U') f(x))  FOR XML PATH(''), TYPE
+            ).value('.', 'NVARCHAR(MAX)') 
+        ,1,0,'') ColumnVal)
+
+    RETURN left(@Columns, len(@Columns)-1);  
+END; 
+
+=================================== Call Funtion ==================================================
+
+
+Declare @Columns varchar(max) =''
+
+set @Columns=(select dbo.UnwantedColum('tbl_2W_Make_TataAIG_Temp','RecordNo,IsActive'))
+DECLARE @sqlStr varchar(max) =''
+
+set @sqlStr='select '+ @Columns +' from tbl_2W_Make_TataAIG_Temp ';
+print(@sqlStr);
+Exec(@SqlStr);

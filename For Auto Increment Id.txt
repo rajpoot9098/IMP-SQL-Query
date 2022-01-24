@@ -1,0 +1,1 @@
+Select (IDENT_CURRENT('tbl_2W_Make_TataAIG_Temp') + 1) as currID

@@ -1,0 +1,7 @@
+WITH table_nameCTE AS  
+(  
+   SELECT *, ROW_NUMBER() over (PARTITION BY MakeName,ModelName,VariantName,CubicCapacity,FuelType,SeatingCapacity ORDER BY MakeName,ModelName,VariantName,CubicCapacity,FuelType,SeatingCapacity) as RecNo  
+   from Mst_2W_Variant_Base where isActive=1
+) 
+
+Update table_nameCTE SET IsActive=2 WHERE RecNo >1 

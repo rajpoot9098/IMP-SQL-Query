@@ -1,0 +1,47 @@
+Select * from tbl_4W_Make_NationalInsu
+NIC_DriverDetails
+
+Select *  from MstApplicationVehicleData where InsuranceCateCode = 2 and SubCateCode = 3 order by RecordNo desc
+
+Select * from MstLog_Motor where CompanyName='FUTURE GENERALI' and ApplicationNo=7050 order by RecordNo desc
+
+select RegistrationNo,CompanyCode,ApplicationNo num,count(ApplicationNo) count1 from MstLog_Motor
+where RegistrationNo=0
+group by ApplicationNo,CompanyCode,RegistrationNo 
+; 
+
+
+    
+  declare @Manufacture varchar(50)='bajaj'
+  declare @ModelName varchar(50)='AVENGER'
+  declare @VariantId int=2
+declare  @CubicCapacity decimal =200
+  declare @strquery varchar(max)=''
+  Declare @Where varchar(max) =''
+ -- Declare @CC varchar(max) =''
+
+				-- set @Where +=' and ModelName like CONCAT(''%'','''+@ModelName+''',''%'') '
+			--set @Where +=' and isnull(VariantID,0)= '+@VariantId
+
+  set @strquery='Select VariantID RecordNo,MakeID as Make_Code,MakeName as Manufacture,ModelName as Model, FuelType as Fuel_Type,VariantID, VariantName as Variant,CubicCapacity CC,
+				   SeatingCapacity as Seating_capacity 
+				  from Mst_Variant_2W  where MakeName like CONCAT(''%'','''+@Manufacture+''',''%'') '
+				  if(@VariantId<>0 or @VariantId<>null)
+				  begin
+				   set @strquery +=' and isnull(VariantID,0)= '''+cast(@VariantId as varchar(10))+''''
+				  end
+				    if(@CubicCapacity!=0)
+			   BEGIN
+				set @strquery +=' and CubicCapacity in('''+cast((@CubicCapacity-1) as varchar(10))+''','''+cast((@CubicCapacity-2) as varchar(10))+''','''+cast(@CubicCapacity as varchar(10))+''','''+cast((@CubicCapacity+1) as varchar(10))+''','''+cast((@CubicCapacity+2) as varchar(10))+''') '
+			   END
+				--  +@Where+
+				  --' order by VariantName'
+				 -- where MakeName like CONCAT('%','bajaj','%') order by VariantName
+				 print @strquery
+				 exec (@strquery)
+
+
+
+
+
+

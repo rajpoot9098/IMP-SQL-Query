@@ -1,0 +1,36 @@
+--select * from MstRegistrationVehiclePlan
+--select * from TrnPolicyRegVehicleData
+
+WITH table_nameCTE AS  
+(
+select Plans.RegistrationNo,
+Plans.RegistrationNoOdp,((Plans.IDVBasic+Plans.ZeroDepreciation+Plans.OwnerDriverPACover+Plans.NoClaimBonus+Plans.RoadsideAssistance+Plans.EngineProtectionCover+Plans.NCBProtector+Plans.KeyAndLockReplacement+
+Plans.Consumables+Plans.DailyAllowance+Plans.InvoicePrice+Plans.TyreProtector+Plans.RIMDamageCover+Plans.LossofPersonalBelongings+Plans.ElectricalAccessories+Plans.NonElectricalAccessories+
+Plans.ExternalBiFuelKit+Plans.PaidDriverCover+Plans.UnnamedPassengerPACover+Plans.VoluntaryDeductible+Plans.AntiTheftDevice)+reg.DiscountAmount) TotalAMT,reg.PolicyPremiumAmount,reg.DiscountAmount,reg.InsuranceCompDesc,reg.ComprehensiveThirdPartyCode
+from view_RegistrationVehiclePlan Plans
+join TrnPolicyRegVehicleData reg on reg.RegistrationNo=Plans.RegistrationNo
+)
+
+select distinct reg.RegistrationNo,reg.RegistrationNoOdp,ROUND(TotalAMT,0) TotalAMT,
+ROUND(PolicyPremiumAmount,0) PolicyPremiumAmount,InsuranceCompDesc,ComprehensiveThirdPartyCode 
+from table_nameCTE reg
+where ROUND(TotalAMT,0)<>ROUND(PolicyPremiumAmount,0) and RegistrationNo in (3663,3706,3734,3743,3754,3831,3916,4117,4136,4179)  order by RegistrationNo;
+
+--select * from MstRegistrationVehiclePlan where RegistrationNo 
+--in (3491,3663,3677,3685,3706,3720,3734,3743,3754,3762,3788,3831,3916,4016,4023,4078,4117,4118,4136,4164,4179) order by RegistrationNo;
+
+--select * from MstRegistrationVehiclePlan where RegistrationNo 
+--in (3663,3706,3734,3743,3754,3831,3916,4117,4136,4179
+--) order by RegistrationNo;
+
+
+
+
+select * from MstRegistrationVehiclePlan where RegistrationNo 
+in (3663,3706,3734,3743,3754,3831,3916,4117,4136,4179
+) order by RegistrationNo;
+
+select  reg.ApplicationNo,reg.ApplicationNoOdp,reg.RegistrationNo,reg.RegistrationNoOdp,reg.PolicyPremiumAmount,reg.DiscountAmount,reg.TotalGSTPremiumAmount,reg.PoicyTotalAmount,
+reg.ComprehensiveThirdPartyCode,reg.InsuranceCompDesc
+from  TrnPolicyRegVehicleData reg
+where  reg.RegistrationNo in (3663,3706,3734,3743,3754,3831,3916,4117,4136,4179);

@@ -1,0 +1,5 @@
+Declare @UnwantedColumName varchar(max) ='RecordNo'
+DECLARE @sql_xml XML = Cast('<root><U>'+ Replace(@UnwantedColumName, ',', '</U><U>')+ '</U></root>' AS XML)
+    
+    
+SELECT f.x.value('.', 'VARCHAR(100)') AS tuple FROM @sql_xml.nodes('/root/U') f(x)

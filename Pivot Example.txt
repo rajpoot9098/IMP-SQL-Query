@@ -1,0 +1,18 @@
+SELECT 
+[RegistrationNo] as RegistrationNo,[RegistrationNoOdp] as RegistrationNoOdp,isnull([IDV Basic],0) as IDVBasic,isnull([Zero Depreciation],0) as ZeroDepreciation,isnull([Owner Driver PA Cover],0) as OwnerDriverPACover,
+isnull([No Claim Bonus],0) as NoClaimBonus,isnull([24x7 Roadside Assistance],0) as RoadsideAssistance,isnull([Engine Protection Cover],0) as EngineProtectionCover,isnull([NCB Protector],0) as NCBProtector,
+isnull([Key & Lock Replacement],0) as KeyAndLockReplacement,isnull([Consumables],0) as Consumables,isnull([Daily Allowance],0) as DailyAllowance,isnull([Invoice Price],0) as InvoicePrice,
+isnull([Tyre Protector],0) as TyreProtector,isnull([RIM Damage Cover],0) as RIMDamageCover,isnull([Loss of Personal Belongings],0) as LossofPersonalBelongings,isnull([Electrical Accessories],0) as ElectricalAccessories,
+isnull([Non-Electrical Accessories],0) as NonElectricalAccessories,isnull([External Bi Fuel Kit],0) as ExternalBiFuelKit,isnull([Paid Driver Cover],0) as PaidDriverCover,isnull([Unnamed Passenger PA Cover],0) as UnnamedPassengerPACover,
+isnull([Voluntary Deductible],0) as VoluntaryDeductible,isnull([Anti-Theft Device],0) as AntiTheftDevice
+FROM
+(
+    SELECT [RegistrationNo],
+           [RegistrationNoOdp],
+           [CoverageCode],
+           cast(ODPremium as decimal(18,2))+cast(TPPremium as decimal(18,2)) as ODPremium
+    FROM [dbo].[MstRegistrationVehiclePlan]
+) AS SourceTable PIVOT(sum([ODPremium]) FOR [CoverageCode] 
+IN([IDV Basic],[Zero Depreciation],[Owner Driver PA Cover],[No Claim Bonus],[24x7 Roadside Assistance],[Engine Protection Cover],[NCB Protector],[Key & Lock Replacement],[Consumables],[Daily Allowance],[Invoice Price],[Tyre Protector],[RIM Damage Cover],
+[Loss of Personal Belongings],[Electrical Accessories],[Non-Electrical Accessories],[External Bi Fuel Kit],[Paid Driver Cover],[Unnamed Passenger PA Cover],[Voluntary Deductible],[Anti-Theft Device])) AS PivotTable
+;

@@ -1,0 +1,17 @@
+--Select TOP(50)* from MstLog_Motor 
+--where ApplicationNo=10743
+--order by RecordNo desc
+
+--Select * from MstRegistrationVehcileData where ApplicationNo=10743
+----AND RegistrationNo = 3707 
+--order by RecordNo desc
+--Select * from TrnPolicyRegVehicleData order by RecordNo desc
+
+Select ApplicationNo,RegistrationNo,ReturnKeyOfPayment,InsuranceCateCode,InsuranceCateDesc,SubCateCode,SubCateDesc,VehicleBrandDesc,VehicleModelDesc,VehicleVarientDesc,
+VehicleRegistrationYrDesc,VehicleRTODesc,PrvPolicyExDesc,VehicleExpiryDesc,PosCode,RMCode,Salutation,VechileOwnerName,VehicleOwnerLastName,
+VechileOwnerName,VehicleOwnerLastName,DOB,MobileNo,EmailID,PINCode,PostalAdd,StateCode,StateDesc,CityCode,CityDesc,Area,PreviousPolicyStartDate,PreviousPolicyExpDate,
+ThirdPartyPolicyInceptionDate,ThirdPartyPolicyExpiryDate,PreviousPolicyInsurerCode,PreviousPolicyInsurerDesc,PreviousPolicyNo,PreviousNCB,CurrentNCB,VechileRegNo,VechileRegDate,
+VechileEngineNo,VechileChassisNo,InsuranceCompDesc,IDVAmount,PolicyPremiumAmount,TotalGSTPremiumAmount,PolicyPremiumGSTRate,DiscountAmount,PoicyTotalAmount,ProposalProduct,ProposalOrderNo,
+ProposalTraceNo,ProposalPolicyNumber,ProposalPartnerCode,ProposalStatusMsg,EntryDate,EntryTime,PaymentInd,PaymentStatus,PostingInd,PolicyNo,TxnAmount,TxnDescription,DownloadLinkURL,
+ProposalNumber,TransactionNo
+from TrnPolicyRegVehicleData order by RecordNo desc

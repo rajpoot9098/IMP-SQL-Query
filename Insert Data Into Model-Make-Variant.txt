@@ -1,0 +1,23 @@
+====================== Insert Into Make ===========================
+
+insert into Mst_2W_Make_Base
+select Distinct MANUFACTURER MakeName from tbl_2W_Make_TataAIG_Base order by MakeName
+
+====================== Insert Into Model ===========================
+
+insert into Mst_2W_Model_Base
+select distinct MakeID,MANUFACTURER MakeName,VEHICLEMODEL_1 ModelName 
+from tbl_2W_Make_TataAIG_Base
+join Mst_2W_Make_Base on MakeName=MANUFACTURER
+order by MANUFACTURER
+
+====================== Insert Into Variant ===========================
+
+insert into Mst_2W_Variant_Base
+select distinct B.MakeID MakeId,A.MANUFACTURER MakeName,B.ModelID,
+A.VEHICLEMODEL_1 ModelName,A.RecordNo VariantId,A.TXT_VARIANT_1 VariantName,A.CUBICCAPACITY CubicCapacity,A.SEATINGCAPACITY SeatingCapacity,Upper(A.TXT_FUEL) FuelType
+from tbl_2W_Make_TataAIG_Base A
+join Mst_2W_Model_Base B on B.MakeName=A.MANUFACTURER AND B.ModelName=A.VEHICLEMODEL_1
+order by MakeName
+
+

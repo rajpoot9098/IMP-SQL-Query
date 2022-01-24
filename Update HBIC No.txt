@@ -1,0 +1,6 @@
+WITH table_nameCTE AS  
+(  
+   select ROW_NUMBER() over (order by RecordNo) as Serial,RecordNo,HBIC from tbl_2W_Make_TataAIG_Base
+) 
+--select Serial,'HB' + right('00000000' + convert(varchar(15), Serial), 8) HBIC,RecordNo FROM table_nameCTE
+update table_nameCTE set HBIC =('HB' + right('00000000' + convert(varchar(15), Serial), 8)) 

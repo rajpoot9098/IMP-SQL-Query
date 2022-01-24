@@ -1,0 +1,7 @@
+DECLARE @SqlStr varchar(max) = '' 
+DECLARE @VariantName varchar(max) = '687,765,12,121,12,44,478787,8787'
+DECLARE @CompanyID numeric(18, 0)=2
+
+DECLARE @sql_xml XML = Cast('<root><U>'+ Replace(@VariantName, ',', '</U><U>')+ '</U></root>' AS XML)
+
+SELECT f.x.value('.', 'VARCHAR(max)') AS tuple FROM @sql_xml.nodes('/root/U') f(x)

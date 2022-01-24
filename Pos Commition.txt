@@ -1,0 +1,11 @@
+select distinct RegMst.ApplicationNo,RegMst.ApplicationNoOdp,RegMst.RegistrationNo,RegMst.RegistrationNoOdp,RegMst.InsuranceCateCode,
+RegMst.InsuranceCateDesc,RegMst.SubCateDesc,RegMst.InsuranceCompCode,RegMst.InsuranceCompDesc,RegMst.IDVAmount,RegMst.PolicyPremiumAmount,
+RegMst.TotalGSTPremiumAmount,RegMst.DiscountAmount,MstRegPlan.ODPremium,MstRegPlan.TPPremium,CommMtx.CommissionAmtPer,
+cast((MstRegPlan.ODPremium*CommMtx.CommissionAmtPer)/100 as decimal(18,2)) CommissionAmt,
+RegMst.PoicyTotalAmount,RegMst.EntryDate,RegMst.PosCode,PosMst.NameEnglish,
+PosMst.MobileNo1,PosMst.POSCatCode,PosMst.POSCatDesc
+from TrnPolicyRegVehicleData RegMst
+join MstPOSMaster PosMst on PosMst.UserCode=RegMst.PosCode
+JOIN MstCommissionMatrix CommMtx on CommMtx.InsuranceCateCode=RegMst.InsuranceCateCode AND CommMtx.InsuranceCompCode=RegMst.InsuranceCompCode
+JOIN MstRegistrationVehiclePlan MstRegPlan ON MstRegPlan.RegistrationNo = RegMst.RegistrationNo 
+AND MstRegPlan.RegistrationNoOdp = RegMst.RegistrationNoOdp AND MstRegPlan.CoverageCode='IDV Basic'

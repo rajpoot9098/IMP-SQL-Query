@@ -1,0 +1,6 @@
+WITH table_nameCTE AS  
+(  
+   SELECT*, ROW_NUMBER() over (PARTITION BY TXT_VARIANT_1 ORDER BY TXT_VARIANT_1) as RecNo  
+   from tbl_2W_Make_TataAIG_Base where MANUFACTURER = 'SUZUKI' and VEHICLEMODEL_1 = 'AESS' and TXT_VARIANT_1 = '125'
+)  
+DELETE FROM table_nameCTE WHERE RecNo >1  

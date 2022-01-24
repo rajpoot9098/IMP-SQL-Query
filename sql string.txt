@@ -1,0 +1,38 @@
+
+
+ Declare @SqlStr varchar(max) =''
+    set @SqlStr =''
+
+	Declare @Where varchar(max) =''
+    set @Where =''
+
+
+set @SqlStr=' Select VariantID RecordNo,MakeID as Make_Code,MakeName as Manufacture,ModelName as Model, FuelType as Fuel_Type,VariantID, '+
+							' VariantName as Variant,CubicCapacity CC,SeatingCapacity as Seating_capacity '+
+							' from Mst_Variant_2W '+
+							' where MakeName like CONCAT(''%'','''+@Manufacture+''',''%'') '
+
+							if(@ModelName!='')
+							  BEGIN
+							   set @SqlStr +=' and ModelName like CONCAT(''%'','''+@ModelName+''',''%'') '
+							END
+
+							if(@CubicCapacity!=0)
+							  BEGIN
+							   set @SqlStr +=' and CubicCapacity in('''+cast((@CubicCapacity-1) as varchar(10))+''','''+cast((@CubicCapacity-2) as varchar(10))+''','''+cast(@CubicCapacity as varchar(10))+''','''+cast((@CubicCapacity+1) as varchar(10))+''','''+cast((@CubicCapacity+2) as varchar(10))+''') '
+							END
+							
+							if(@FuelType!='')
+							  BEGIN
+							   set @SqlStr +=' and FuelType like CONCAT(''%'','''+@FuelType+''',''%'') '
+							END
+
+							if(@VariantId!=0)
+							  BEGIN
+							   set @SqlStr +=' and isnull(VariantID,0)= '''+cast(@VariantId as varchar(10))+''''
+							END
+							
+							set @SqlStr +=' order by VariantName '
+
+				print(@SqlStr);
+				Exec(@SqlStr);

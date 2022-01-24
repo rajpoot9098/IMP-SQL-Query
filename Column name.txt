@@ -1,0 +1,10 @@
+select distinct
+STUFF((SELECT  'Bajaj.'+allColumns.COLUMN_NAME  +', '
+FROM (
+SELECT COLUMN_NAME
+FROM INFORMATION_SCHEMA.COLUMNS as tb
+WHERE TABLE_NAME = N'tbl_2W_Make_BajajAllianz'
+) AS allColumns
+WHERE allColumns.COLUMN_NAME NOT IN ('')  FOR XML PATH(''), TYPE
+            ).value('.', 'NVARCHAR(MAX)') 
+        ,1,0,'') ColumnVal

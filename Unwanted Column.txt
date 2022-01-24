@@ -1,0 +1,20 @@
+
+Declare @Columns varchar(max) =''
+Declare @SqlStr varchar(max) =''
+
+set	@Columns= (
+select distinct
+STUFF((SELECT  allColumns.COLUMN_NAME  +', '
+FROM (
+SELECT COLUMN_NAME
+FROM INFORMATION_SCHEMA.COLUMNS as tb
+WHERE TABLE_NAME = N'tbl_2W_Make_TataAIG_Temp'
+) AS allColumns
+WHERE allColumns.COLUMN_NAME NOT IN ('HBIC','RecordNo', 'IsActive')  FOR XML PATH(''), TYPE
+            ).value('.', 'NVARCHAR(MAX)') 
+        ,1,0,'') ColumnVal)
+
+set @SqlStr +=' select '+left(@Columns, len(@Columns)-1) +' from tbl_2W_Make_TataAIG_Temp '
+
+print(@SqlStr);
+Exec(@SqlStr);
